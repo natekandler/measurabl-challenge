@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import { mergeRows } from '../utils/rowUtils';
 
 class Table extends Component {
   state  = {rows: []};
@@ -20,18 +21,13 @@ class Table extends Component {
     const ages = await this.fetchAges();
     const names = await this.fetchNames();
 
-    const rows = {};
-    ages.data.concat(names.data).forEach(function(obj) {
-      rows[obj.id] = Object.assign(rows[obj.id] || {}, obj)
-    });
-  
-    return Array.from(Object.values(rows));
+    return mergeRows(ages.data, names.data)
   }
 
   renderRows() {
     return this.state.rows.map( row => {
       return (
-        <tr>
+        <tr key={row.id}>
         <td data-label="Id">{row.id || "-"}</td>
         <td data-label="FirstName">{row.firstName || "-"}</td>
         <td data-label="LastName">{row.lastName || "-"}</td>
@@ -44,7 +40,7 @@ class Table extends Component {
   render() {
     return (
       <div>
-        <table class="ui celled table">
+        <table className="ui celled table">
           <thead>
             <tr>
               <th>Id</th>
