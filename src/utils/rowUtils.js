@@ -4,6 +4,6 @@ export function mergeRows(arrOne, arrTwo) {
     rows[obj.id] = Object.assign(rows[obj.id] || {}, obj)
   });
 
-  return Array.from(Object.values(rows));
+  return [...Object.values(rows)];
 }
 
